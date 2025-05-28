@@ -32,9 +32,13 @@ To be able to detect different hand gestures within Blender’s environment, you
 
 Four different hand gestures are needed for this implementation. First, open your computer’s webcam or camera app and start taking pictures of your hand gestures using different angles, distances, lighting conditions, and locations on the screen. The more varied your hand gesture pictures are, the better your system will respond to these different gestures! While not strictly required, the following four hand gestures are recommended for this implementation:
 
-|<img src="/Dataset/RAW_dataset/fist/sample_fist.jpg" width="200"><br />Fist Hand Gesture |<img src="/Dataset/RAW_dataset/open_hand/sample_open_hand.jpg" width="200"><br />Open Hand Gesture|
+<div align="center">
+ 
+|<img src="/Dataset/RAW_dataset/fist/sample_fist.jpg" width="200"><br />**Fist Hand Gesture** |<img src="/Dataset/RAW_dataset/open_hand/sample_open_hand.jpg" width="200"><br />**Open Hand Gesture**|
 |:-------------------------:|:-------------------------:|
-|<img src="/Dataset/RAW_dataset/pick/sample_pick.jpg" width="200"><br />Pick Hand Gesture |<img src="/Dataset/RAW_dataset/pinch/sample_pinch.jpg" width="200"><br />Pinch Hand Gesture|
+|<img src="/Dataset/RAW_dataset/pick/sample_pick.jpg" width="200"><br />**Pick Hand Gesture** |<img src="/Dataset/RAW_dataset/pinch/sample_pinch.jpg" width="200"><br />**Pinch Hand Gesture**|
+
+</div>
 
 Additionally, it is recommended to take these hand gesture pictures while your hand is in motion, on different locations across the screen, and with slight variations on how your fingers are positioned. This will better simulate your hand gesture movements within Blender. If you later find out that a certain hand gesture orientation or position is causing trouble, go back and take more hand gesture pictures with that specific hand position and orientation in mind. Once you finish taking your pictures, sort them into the provided ‘fist’, ‘open_hand’, ‘pick’, and ‘pinch’ folders within the “…/Dataset/RAW_dataset” directory”.
 
@@ -110,35 +114,77 @@ The first set of tests performed on this system were on the trained SVM classifi
 
 The following table summarizes the results for each classifier:
 
-||Accuracy|Macro-Precision|Macro-Recall|
+<div align="center">
+ 
+||**Accuracy**|**Macro-Precision**|**Macro-Recall**|
 |:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|
-|HOG Model|59.55%|60.81%|59.64%|
-|Distance Model|94.19%|94.49%|94.23%|
+|**HOG Model**|59.55%|60.81%|59.64%|
+|**Distance Model**|94.19%|94.49%|94.23%|
+
+</div>
 
 As seen by these results, the distance feature extraction method works significantly better on unseen data over the HOG model, which is exactly what is needed for this hand gesture system to perform smoothly within Blender. These results are most likely attributed to the HOG SVM classifier overfitting on the used training dataset, which would need to be significantly larger and more varied in order for the HOG model to better generalize to unseen data. This claim is further supported by the accuracy results in the svm_training.py code:
 
-||Accuracy|
+<div align="center">
+ 
+||**Accuracy**|
 |:-------------------------:|:-------------------------:|
-|HOG Model|100%|
-|Distance Model|96.93%|
+|**HOG Model**|100%|
+|**Distance Model**|96.93%|
+
+</div>
 
 Here, the entire dataset is used to both train and test the model. These results show that the HOG SVM classifier is indeed fitting too closely to the training data. I have tried applying Principal Component Analysis (PCA) to try to simplify and remove some of the noise within the data that the classifier might be overfitting to, and was able to somewhat improve the results.Here are the results for the HOG model using PCA: 
 
-||Accuracy|Macro-Precision|Macro-Recall|
+<div align="center">
+ 
+||**Accuracy**|**Macro-Precision**|**Macro-Recall**|
 |:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|
-|HOG Model + PCA|67.60%|67.48%|67.68%|
+|**HOG Model + PCA**|67.60%|67.48%|67.68%|
+
+</div>
 
 Overall, it is recommended that you use the distance implementation within Blender for best results.
 
 Next, the system’s overall effectiveness was tested by performing specific tasks within Blender and then calculating the differences between the recreated scenes. To do this, three different starting scenes and three corresponding goal scenes were created within Blender. Then, using the hand gesture system, I attempted to recreate the goal scenes starting from the corresponding base scenes, making sure to record the time it took to complete the task as well. Finally, the vertex coordinates from the goal scene and the recreated scene were extracted onto .csv files, and the root mean squared error (RMSE) was calculated for all of the vertex points within the two scenes. The code to extract the scene vertices and calculate the scene differences can be found within the extract_blender_data.py and the calculate_scene_difference.py files respectively, located in the “../Testing” directory. The three base and result Blender scenes used to test this system are also found within the “../Testing” directory
 
-Each test was performed three times per input type and the result averages were recorded.  For the computer mouse baseline, only viewport commands were used along with corresponding keyboard shortcuts. The recorded time is in minutes and seconds. Due to the HOG system’s poor performance, it was not used for these tests. Results for these experiments can be found in the following table:
+Each test was performed three times per input type and the result averages were recorded.  For the computer mouse baseline, only viewport commands were used along with corresponding keyboard shortcuts. The recorded time is in minutes and seconds. Due to the HOG system’s poor performance, it was not used for these tests. Results for these experiments can be found in the following table: 
 
-| |Scene 1||Scene 2||Scene 3||
-|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|
-|Input Type|RMSE|Time|RMSE|Time|RMSE|Time|
-|Distance Model|0.7259|2:00.99|0.3681|00:40.91|1.3011|01:21.06|
-|Computer Mouse|0.4540|1:22.30|0.0793|00:32.53|1.1923|00:27.57|
+<table align="center">
+ <tr>
+  <td></td>
+  <td colspan="2" align="center"><b>Scene 1</b></td>
+  <td colspan="2" align="center"><b>Scene 2</b></td>
+  <td colspan="2" align="center"><b>Scene 3</b></td>
+ </tr>
+ <tr>
+  <td align="center"><b>Input Type</b></td>
+  <td align="center"><b>RMSE</b></td>
+  <td align="center"><b>Time</b></td>
+  <td align="center"><b>RMSE</b></td>
+  <td align="center"><b>Time</b></td>
+  <td align="center"><b>RMSE</b></td>
+  <td align="center"><b>Time</b></td>
+ </tr>
+ <tr>
+  <td align="center"><b>Distance Model</b></td>
+  <td align="center">0.7259</td>
+  <td align="center">2:00.99</td>
+  <td align="center">0.3681</td>
+  <td align="center">00:40.91</td>
+  <td align="center">1.3011</td>
+  <td align="center">01:21.06</td>
+ </tr>
+ <tr>
+  <td align="center"><b>Computer Mouse</b></td>
+  <td align="center">0.4540</td>
+  <td align="center">1:22.30</td>
+  <td align="center">0.0793</td>
+  <td align="center">00:32.53</td>
+  <td align="center">1.1923</td>
+  <td align="center">00:27.57</td>
+ </tr>
+</table>
 
 Overall, there is still a lot of work to be done in order for this hand gesture system to be comparable to that of traditional computer mouse controls. For all three tests, the computer mouse consistently recreated the scenes with higher accuracy and within a shorter amount of time than that of the hand gesture system. One observation during these tests was that the object rotation controls for the hand gesture system were particularly difficult to master, especially since yaw rotations are not supported. While the MediaPipe system does a good job of accurately extracting data points in 2D space, it does not do well with capturing point depth, causing some 3D controls to be difficult to implement. With further refinement and the addition of new controls, this system has the potential to attract newcomers to Blender by providing a more intuitive interface.
 
