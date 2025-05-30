@@ -148,6 +148,15 @@ Overall, it is recommended that you use the distance implementation within Blend
 
 Next, the system’s overall effectiveness was tested by performing specific tasks within Blender and then calculating the differences between the recreated scenes. To do this, three different starting scenes and three corresponding goal scenes were created within Blender. Then, using the hand gesture system, I attempted to recreate the goal scenes starting from the corresponding base scenes, making sure to record the time it took to complete the task as well. Finally, the vertex coordinates from the goal scene and the recreated scene were extracted onto .csv files, and the root mean squared error (RMSE) was calculated for all of the vertex points within the two scenes. The code to extract the scene vertices and calculate the scene differences can be found within the extract_blender_data.py and the calculate_scene_difference.py files respectively, located in the “../Testing” directory. The three base and result Blender scenes used to test this system are also found within the “../Testing” directory
 
+<div align="center">
+ 
+|<img src="/readme_images/base1.png" width="400"><br />**Scene 1 base** |<img src="/readme_images/goal1.png" width="400"><br />**Scene 1 goal**|
+|:-------------------------:|:-------------------------:|
+|<img src="/readme_images/base2.png" width="400"><br />**Scene 2 base** |<img src="/readme_images/goal2.png" width="400"><br />**Scene 2 goal**|
+|<img src="/readme_images/base3.png" width="400"><br />**Scene 3 base** <br />(Blue object is -50m along the y-axis)|<img src="/readme_images/goal3.png" width="400"><br />**Scene 3 goal**|
+
+</div>
+
 Each test was performed three times per input type and the result averages were recorded.  For the computer mouse baseline, only viewport commands were used along with corresponding keyboard shortcuts. The recorded time is in minutes and seconds. Due to the HOG system’s poor performance, it was not used for these tests. Results for these experiments can be found in the following table: 
 
 <table align="center">
